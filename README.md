@@ -4,9 +4,9 @@ def temperatureMode(temperature_input):
     print('The average temperature is:',temperature_input)
     temperature = 0
     #sets the base of variable temperature to 0
-    if int(temperature_input) in range(0,45):
+    if int(temperature_input) in range(-100,45):
     #starts if statement using inputted temperature
-    #if the inputted temperature is between 0-44...
+    #if the inputted temperature is between -100-44...
         temperature = -1 
     #then temperature base is equal to -1
         print('Temperature is considered Low')
@@ -18,43 +18,16 @@ def temperatureMode(temperature_input):
     #then temperature base remains as 0
         print('Temperature is considered Medium')
     #then print text "Medium"
-    elif int(temperature_input) in range(70,100):
+    elif int(temperature_input) in range(70,1000):
     #starts else statement using inputted temperature
-    #if the inputted temperature is between 70-100...
+    #if the inputted temperature is between 70-1000...
         temperature = 1
     #then temperature base is equal to 1
         print('Temperature is considered High')
     #then print "High"
     return temperature
     #returns the temperature value so that code below can use it
-
-def windMode(wind_input):
-    wind = 0
-    #sets the base of wind speed to 0
-    if int(wind_input) in range(0,5):
-    #starts if statement using inputted wind speed
-    #if the wind speed is between 0-10...
-        wind = -1 
-    #then wind speed base is equal to -1
-        print('Wind speed is considered Low')
-    #then print "Low"
-    elif int(wind_input) in range(5,10):
-    #starts elif statement using inputted wind speed
-    #if the wind speed is between 10-20...
-        wind = 0
-    #then the base of wind speed remains 0
-        print('Wind speed is considered Medium')
-    #then prints "Medium"
-    elif int(wind_input) in range(10,100):
-    #starts elif statement using inputted wind speed
-    #if the wind speed is between 20-100...
-        wind = 1
-    #then the base of wind speed is equal to 1
-        print('Wind speed is considered High')    
-    #then prints "High"
-    return wind
-    #returns the wind value so that the code below can use it
-
+    
 def statusMode(status_input):
     status = 0
     #sets the base of variable status to 0
@@ -72,7 +45,7 @@ def statusMode(status_input):
     #then status base remains 0
         print('Weather status is considered Medium')
     #then print "Medium"
-    elif "sunny" in status_input or "clear" in status_input:
+    elif "sun" in status_input or "clear" in status_input:
     #starts elif statement using inputted status
     #if the status input has any of the keywords...
         status = 1
@@ -81,6 +54,33 @@ def statusMode(status_input):
     #then print "High"
     return status
     #returns the status value so that the code below can use it
+
+def windMode(wind_input):
+    wind = 0
+    #sets the base of wind speed to 0
+    if int(wind_input) in range(0,5):
+    #starts if statement using inputted wind speed
+    #if the wind speed is between 0-4.99...
+        wind = -1 
+    #then wind speed base is equal to -1
+        print('Wind speed is considered Low')
+    #then print "Low"
+    elif int(wind_input) in range(5,10):
+    #starts elif statement using inputted wind speed
+    #if the wind speed is between 5-9.99...
+        wind = 0
+    #then the base of wind speed remains 0
+        print('Wind speed is considered Medium')
+    #then prints "Medium"
+    elif int(wind_input) in range(10,100):
+    #starts elif statement using inputted wind speed
+    #if the wind speed is between 10-99.99...
+        wind = 1
+    #then the base of wind speed is equal to 1
+        print('Wind speed is considered High')    
+    #then prints "High"
+    return wind
+    #returns the wind value so that the code below can use it
 
 def suggestions(temperature, status, wind):
     clothing = [0,0,0,0,0,0,0]
@@ -250,7 +250,6 @@ one_call = mgr.one_call(lat, lon)
 #need the latitude and longitude of locaiton to find information
 days = 0
 #day count starting at 0
-temperature_input = 0
 clothing = [0,0,0,0,0,0,0]
 for weather in one_call.forecast_daily:
 #utilizes one_call function in OWM API to print desired 
@@ -258,14 +257,14 @@ for weather in one_call.forecast_daily:
     #prints ----- in between each day count to separate days and make everything organized
     print("Day " + str(days))
     #prints string of days starting at 0
+    print('Lowest Temperature(Fahrenheit): ' + str(weather.temperature('fahrenheit')['min']) + '\nHighest Temperature(Fahrenheit): ' + str(weather.temperature('fahrenheit')['max']))
+    #prints string of lowest and highest temperature according to the longitude and latitude geographical locations that the user inputted 
+    print('Weather: ' + str(weather.detailed_status))
+    #prints string of detailed weather status according to the longitude and latitude geographical locations that the user inputted 
     print('Wind Speed(m/s): ' + str(weather.wind()['speed']))
     #prints string of weather according to the longitute and latitude geographical locations that the user inputted 
     print('Humidity(%): ' + str(weather.humidity))
     #prints string of humidity according to the longitude and latitude geographical locations that the user inputted
-    print('Weather: ' + str(weather.detailed_status))
-    #prints string of detailed weather status according to the longitude and latitude geographical locations that the user inputted 
-    print('Lowest Temperature(Fahrenheit): ' + str(weather.temperature('fahrenheit')['min']) + '\nHighest Temperature(Fahrenheit): ' + str(weather.temperature('fahrenheit')['max']))
-    #prints string of lowest and highest temperature according to the longitude and latitude geographical locations that the user inputted 
     days += 1
     #the count of days increase at increments of 1
     temperature = temperatureMode(((weather.temperature('fahrenheit')['min']) + (weather.temperature('fahrenheit')['max']))//2)
